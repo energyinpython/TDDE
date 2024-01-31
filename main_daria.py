@@ -97,11 +97,11 @@ def draw_heatmap(df_new_heatmap, title, sc = ''):
     >>> draw_heatmap(df_new_heatmap, title)
     """
     plt.figure(figsize = (8, 5))
-    sns.set(font_scale = 1.2)
+    sns.set(font_scale = 1.6)
     heatmap = sns.heatmap(df_new_heatmap, annot=True, fmt=".4f", cmap="GnBu",
                           linewidth=0.5, linecolor='w')
     plt.yticks(va="center")
-    plt.xlabel('Methods')
+    plt.xlabel('Scenario')
     plt.title('Correlation: ' + title)
     plt.tight_layout()
     title = title.replace("$", "")
@@ -126,14 +126,14 @@ def main():
     coun_names = pd.read_csv('DATASET/country_names.csv')
     country_names = list(coun_names['Symbol'])
 
-    # for EIDES ranks preparation
-    # eides ranks
+    # # for EIDES ranks preparation based on EIDES index
+    # # eides ranks
     # eides_rankings = pd.read_csv('DATASET/eides_scores.csv', index_col='Country')
     # df_eides_rankings = pd.DataFrame(index=country_names)
 
 
 
-    str_years = [str(y) for y in range(2018, 2021)]
+    str_years = [str(y) for y in range(2018, 2022)]
     # dataframe for annual results TOPSIS
     preferences_t = pd.DataFrame(index = country_names)
     rankings_t = pd.DataFrame(index = country_names)
@@ -146,8 +146,8 @@ def main():
     summary_corrs = pd.DataFrame(index = country_names)
 
     for el, year in enumerate(str_years):
-        # for EIDES ranks preparation
-        # eides
+        # # for EIDES ranks preparation based on EIDES index
+        # # eides
         # eides_ref = eides_rankings['EIDES ' + str(year)].to_numpy()
         # eides_rank = rank_preferences(eides_ref, reverse=True)
         # df_eides_rankings['EIDES ' + str(year)] = eides_rank
@@ -189,11 +189,10 @@ def main():
         summary_corrs['TOPSIS ' + str(year)] = rank_t
 
 
-    # for EIDES ranks preparation
-    # eides
+    # # for EIDES ranks preparation based on EIDES index
+    # # eides
     # df_eides_rankings = df_eides_rankings.rename_axis('Country')
     # df_eides_rankings.to_csv('results/eides_ranks.csv')
-
 
 
     preferences_t.to_csv('results/preferences_t_' + scenario + '.csv')
@@ -217,8 +216,7 @@ def main():
 
     x1 = np.arange(0, len(str_years))
 
-
-    plt.figure(figsize = (7, 6))
+    plt.figure(figsize = (10, 6))
     for i in range(rankings_t.shape[0]):
         c = color[i]
         plt.plot(x1, rankings_t.iloc[i, :], '*-', color = c, linewidth = 2)
@@ -237,14 +235,13 @@ def main():
     plt.gca().invert_yaxis()
     
     plt.grid(True, linestyle = ':')
-    plt.title('TOPSIS Rankings for scenario ' + scenario)
+    plt.title('TOPSIS annual rankings for scenario ' + r'$' + scenario[0] + '_' + scenario[1] + '$')
     plt.tight_layout()
     plt.savefig('results/rankings_years_t_' + scenario + '.png')
     plt.show()
     
     
 
-    
     # ======================================================================
     # DARIA-TOPSIS method
     # ======================================================================
@@ -289,7 +286,7 @@ def main():
 
     # ==============================================================
     # S = S_df.mean(axis = 1).to_numpy()
-    S = S_df['2020'].to_numpy()
+    S = S_df['2021'].to_numpy()
 
     G = G_df[met.upper()].to_numpy()
     dir = G_df[met.upper() + ' dir'].to_numpy()
@@ -342,7 +339,7 @@ def main():
     # draw_heatmap(df_new_heatmap_rw, r'$r_w$')
 
     # correlation matrix with rs coefficient
-    draw_heatmap(df_new_heatmap_rs, r'$r_s$')
+    # draw_heatmap(df_new_heatmap_rs, r'$r_s$')
 
 
 
@@ -372,10 +369,45 @@ def main():
     df_new_heatmap_rs.columns = method_types
 
     # correlation matrix with rw coefficient
-    draw_heatmap(df_new_heatmap_rw, r'$r_w$', '_eides')
+    # draw_heatmap(df_new_heatmap_rw, r'$r_w$', '_eides')
 
     # correlation matrix with rs coefficient
-    draw_heatmap(df_new_heatmap_rs, r'$r_s$', '_eides')
+    # draw_heatmap(df_new_heatmap_rs, r'$r_s$', '_eides')
+
+
+
+
+
+    # ===================================================================
+    # R1 R2 R3 ranks usage
+    # Correlations EIDES ranks
+    # correlations for PLOT
+    r1_r2_r3 = pd.read_csv('DATASET/corrs_R1_R2_R3.csv', index_col='Country')
+    method_types = list(r1_r2_r3.columns)
+    dict_new_heatmap_rw = Create_dictionary()
+
+    for el in method_types:
+        dict_new_heatmap_rw.add(el, [])
+
+    dict_new_heatmap_rs = copy.deepcopy(dict_new_heatmap_rw)
+
+    # heatmaps for correlations coefficients rw (Weighted Spearman) and rs (Spearman)
+    for i in method_types[::-1]:
+        for j in method_types:
+            dict_new_heatmap_rw[j].append(corrs.weighted_spearman(r1_r2_r3[i], r1_r2_r3[j]))
+            dict_new_heatmap_rs[j].append(corrs.spearman(r1_r2_r3[i], r1_r2_r3[j]))
+
+    df_new_heatmap_rw = pd.DataFrame(dict_new_heatmap_rw, index = method_types[::-1])
+    df_new_heatmap_rw.columns = method_types
+
+    df_new_heatmap_rs = pd.DataFrame(dict_new_heatmap_rs, index = method_types[::-1])
+    df_new_heatmap_rs.columns = method_types
+
+    # correlation matrix with rw coefficient
+    draw_heatmap(df_new_heatmap_rw, r'$r_w$', '_r1_r2_r3')
+
+    # correlation matrix with rs coefficient
+    draw_heatmap(df_new_heatmap_rs, r'$r_s$', '_r1_r2_r3')
     
 
 if __name__ == '__main__':

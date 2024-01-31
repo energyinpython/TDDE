@@ -1,29 +1,29 @@
-Country,EIDES 2018,EIDES 2019,EIDES 2020
-Austria,10,10,11
-Belgium,9,9,9
-Bulgaria,25,28,27
-Croatia,21,25,24
-Cyprus,18,19,21
-Czech Republic,14,15,16
-Denmark,1,2,1
-Estonia,11,11,12
-Finland,4,5,5
-France,12,12,10
-Germany,5,6,6
-Greece,24,27,26
-Hungary,22,22,22
-Ireland,8,8,8
-Italy,20,21,20
-Latvia,19,23,22
-Lithuania,15,16,15
-Luxembourg,3,7,7
-Malta,10,13,14
-Netherlands,7,3,3
-Poland,19,20,18
-Portugal,17,18,19
-Romania,26,26,25
-Slovakia,23,24,23
-Slovenia,16,17,17
-Spain,13,14,13
-Sweden,2,1,2
-United Kingdom,6,4,4
+Country,EIDES 2018,EIDES 2019,EIDES 2020,EIDES 2021
+Austria,10,10,11,11
+Belgium,9,9,9,12
+Bulgaria,25,28,27,27
+Croatia,21,25,24,21
+Cyprus,18,19,21,24
+Czech Republic,14,15,16,16
+Denmark,1,2,1,1
+Estonia,11,11,12,10
+Finland,4,5,5,2
+France,12,12,10,9
+Germany,5,6,6,5
+Greece,24,27,26,25
+Hungary,22,22,22,20
+Ireland,8,8,8,8
+Italy,20,21,20,22
+Latvia,19,23,22,21
+Lithuania,15,16,15,17
+Luxembourg,3,7,7,7
+Malta,10,13,14,14
+Netherlands,7,3,3,6
+Poland,19,20,18,19
+Portugal,17,18,19,18
+Romania,26,26,25,26
+Slovakia,23,24,23,23
+Slovenia,16,17,17,15
+Spain,13,14,13,13
+Sweden,2,1,2,3
+United Kingdom,6,4,4,4

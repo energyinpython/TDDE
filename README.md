@@ -1,2 +1,2 @@
 # TDDE
-The Temporal Digital Entrepreneurship index (TDDE)
+The Temporal Dynamics of Digital Entrepreneurship index (TDDE)
